@@ -1,6 +1,6 @@
-# Rezolvare Cerința 1
+# Cerinta 1
 def calculeaza_nota_finala(t1, t2, proiect):
-    media = 0.30 * t1 + 0.30 * t2 + 0.40 * proiect
+    media = t1 * 0.30 + t2 * 0.30 + proiect * 0.40
     return round(media, 2)
 
 # Testare funcție
@@ -8,28 +8,29 @@ print(calculeaza_nota_finala(8.5, 7.0, 9.5))
 
 
 
-
-# Rezolvare Cerința 2
+# Cerinta 2
 import numpy as np
-
 ore_studiu = np.array([12, 5, 18, 8, 15, 3, 22, 10])
 
-# 1. Statistici descriptive
+# 1. Statistici
 print("Media:", np.mean(ore_studiu))
 print("Deviația standard:", np.std(ore_studiu))
 print("Minim:", np.min(ore_studiu))
 print("Maxim:", np.max(ore_studiu))
 
-# 2 & 3. Filtrare booleană
+# 2. Filtru boolean
 filtru = ore_studiu > 10
-print("Filtru boolean:", filtru)
-print("Ore de studiu > 10:", ore_studiu[filtru])
+print("Filtru:", filtru)
+print("Ore > 10:", ore_studiu[filtru])
 
 
 
-
-# Rezolvare Cerința 3
+# Cerinta 3
 import pandas as pd
+
+def calculeaza_nota_finala(t1, t2, proiect):
+    media = t1 * 0.30 + t2 * 0.30 + proiect * 0.40
+    return round(media, 2)
 
 date_studenti = {
     'Nume': ['Ana', 'Bogdan', 'Cristian', 'Elena', 'Florin', 'Gabriela', 'Horia', 'Ioana'],
@@ -42,38 +43,20 @@ date_studenti = {
 df_studenti = pd.DataFrame(date_studenti)
 
 # 1. Calcul Nota_Finala
-note = []
-for i in range(len(df_studenti)):
-    nota = calculeaza_nota_finala(df_studenti['Test_1'][i],
-                                  df_studenti['Test_2'][i],
-                                  df_studenti['Proiect'][i])
-    note.append(nota)
-
-df_studenti['Nota_Finala'] = note
+df_studenti['Nota_Finala'] = df_studenti.apply(
+    lambda rand: calculeaza_nota_finala(rand['Test_1'], rand['Test_2'], rand['Proiect']),
+    axis=1
+)
 
 # 2. Adăugare coloană Admis
 df_studenti['Admis'] = df_studenti['Nota_Finala'] >= 6.0
 
-print(df_studenti)
-
 # 3. Filtrare
-admisi = df_studenti[df_studenti['Admis'] == True]
-rezultat = admisi[admisi['Ore_Studiu'] > 10]
-print(rezultat)
+print(df_studenti[(df_studenti['Admis']) & (df_studenti['Ore_Studiu'] > 10)])
 
 
 
-
-# Răspuns Cerința 4
-
-# 1. Există un astfel de student?
-#    Da, Gabriela: nota finală 9.65, dar doar 3 ore de studiu pe săptămână.
-
-# 2. Explicație în lumea reală:
-#    - știa deja materia
-#    - orele au fost notate greșit
-#    - există factori care nu apar în tabel (talent, studiu în grup)
-
-# 3. Impact asupra unui model de Machine Learning:
-#    - este un outlier care nu respectă regula "mai multe ore = notă mai mare"
-#    - într-un set mic de date poate încurca modelul și duce la predicții mai slabe
+#Cerinta 4
+# Da, Gabriela are nota finala 9.65 si a invatat doar 3 ore pe saptamana.
+# In realitate, poate stia deja materia sau invata foarte repede dar poate fi si o greseala in date.
+# Pentru un model de Machine Learning este o valoare ciudata (outlier), care il poate incurca si ii poate scadea acuratetea, mai ales cand sunt putine date.
