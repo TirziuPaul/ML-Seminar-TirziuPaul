@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import warnings
 warnings.filterwarnings('ignore')
-
 penguins_df = sns.load_dataset('penguins')
 penguins_df.head()
 
