@@ -1,3 +1,15 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.preprocessing import StandardScaler
+import warnings
+warnings.filterwarnings('ignore')
+
+titanic = sns.load_dataset('titanic')
+df = titanic[['survived', 'pclass', 'sex', 'age', 'fare', 'embarked', 'deck']].copy()
+df.head()
+
 # TODO 1.1 — procentul de valori lipsă pe coloană
 procent_lipsa = (df.isnull().mean() * 100).sort_values(ascending=False)
 print(procent_lipsa)
